@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Simple Invoicing - Built with AngularJS</title>
+  <title>Piedpiper Invoicing</title>
   <meta name="description" content="AngularJS and Angular Code Example for creating Invoices and Invoicing Application">
   <script src="js/jquery-1.7.1.js" type="text/javascript"></script>
   <script type="text/javascript" src="js/angular1.0.7.min.js"></script>
@@ -30,22 +30,7 @@
       <td align="center" colspan="2">
         INVOICE
       </td>
-      <td align="right">
-        <input type='file' id="imgInp" />
-        <img ng-hide="logoRemoved" id="company_logo" src="images/metaware_logo.png" alt="your image" width="300" />
-        <br/>
-        <div class="noPrint" ng-hide="printMode">
-          <a ng-click="editLogo()" href >Edit Logo</a>
-          <a ng-click="removeLogo()" id="remove_logo" href >Remove logo</a>
-        </div>
-      </td>
     </tr>
-    <!-- <tr>
-      <td>
-        <h4>Invoice #<input type="text" id="invoice_number" ng-model="invoice.invoice_number" /></h4>
-      </td>
-      
-    </tr> -->
   </table>
   <table class="table nomarginbottom">
     <tr>
@@ -58,13 +43,22 @@
           <div><input type="text" ng-model="invoice.customer_info.postal"/></div>
         </div>
       </td>
-      <td align="right">
+      <!-- <td align="right">
         <div class="align-right">
           <div><strong><input type="text" ng-model="invoice.company_info.name"/></strong></div>
           <div><input type="text" ng-model="invoice.company_info.web_link"/></div>
           <div><input type="text" ng-model="invoice.company_info.address1"/></div>
           <div><input type="text" ng-model="invoice.company_info.address2"/></div>
           <div><input type="text" ng-model="invoice.company_info.postal"/></div>
+        </div>
+      </td> -->
+      <td align="right">
+        <input type='file' id="imgInp" />
+        <img ng-hide="logoRemoved" id="company_logo" src="images/metaware_logo.png" alt="your image" width="300" />
+        <br/>
+        <div class="noPrint" ng-hide="printMode">
+          <a ng-click="editLogo()" href >Edit Logo</a>
+          <a ng-click="removeLogo()" id="remove_logo" href >Remove logo</a>
         </div>
       </td>
     </tr>
@@ -94,37 +88,30 @@
   </table>
   <table class="table table-striped" align="center" >
     <tr>
-        <th></th>
+        <th ng-hide="printMode"></th>
         <th>SlNo:</th>
         <th>Publication/Product</th>
         <th>Material</th>
         <th>Size</th>
         <th>Quantity</th>
         <th>Pages</th>
-        <th>Amount</th>
-        <!-- <th>Description</th>
-        <th>Qty</th>
-        <th>Cost</th>
-        <th style="text-align:right;">Total</th> -->
-        
+        <th>Amount</th>        
     </tr>
     <tr ng:repeat="item in invoice.items" style="display: none" jq:animate="dropdown;250">
-        <td><a href ng-hide="printMode" ng-click="removeItem(item)" class="btn btn-danger">[X]</a></td>
-        <td><input ng:model="item.slno" value="1" size="1" ng:required ng:validate="integer" placeholder="Sl No"></td>
-        <td><textarea ng:model="item.description" placeholder="Description"></textarea></td>
-        <td><input ng:model="item.material" size="4" ng:required placeholder="material"></td>
+        <td ng-hide="printMode"><a href ng-hide="printMode" ng-click="removeItem(item)" class="btn btn-danger">[X]</a></td>
+        <td align="center" ><input ng:model="item.slno" value="1" size="1" ng:required ng:validate="integer" placeholder="Sl No"></td>
+        <td><textarea style="resize:none;" rows="2" ng:model="item.description" placeholder="Description"></textarea></td>
+        <td><input ng:model="item.material" size="6" ng:required placeholder="material"></td>
         <td><input ng:model="item.size" size="4" ng:required placeholder="size"></td>
         <td><input ng:model="item.qty" value="1" size="4" ng:required ng:validate="integer" placeholder="qty"></td>
         <td><input ng:model="item.pages" value="1" size="4" ng:required ng:validate="integer" placeholder="pages"></td>
-        <td><input ng:model="item.amount" value="0.00" ng:required ng:validate="integer" size="6" placeholder="cost"></td>
-       <!--  <td align="right">{{item.cost * item.qty | currency}}</td> -->
-        
+        <td><input ng:model="item.amount" value="0.00" ng:required ng:validate="integer" size="6" placeholder="cost"></td>        
     </tr>
     <tr ng-hide="printMode">
         <td colspan="8"><a class="btn btn-primary" href ng:click="addItem()" >Add Item</a></td>
     </tr>
     <tr id="spacefiller">
-      <td>
+      <td ng-hide="printMode">
         
       </td>
       <td>
@@ -149,37 +136,42 @@
        
       </td>
     </tr>
-  <!-- </table>
-  <table id="sumTable" class="table table-striped" align="center" > -->
-    <tr>
-      <td colspan="7" align="right">
+    <tr class="sumTableRow">
+      <td ng-hide="printMode"></td>
+      <td colspan="6" align="right">
         Total
       </td>
       <td>
         {{invoice_sub_total()}}
       </td>
     </tr>
-    <tr>
-      <td colspan="7" >
+    <tr class="sumTableRow">
+      <td ng-hide="printMode"></td>
+      <td colspan="6" >
         Service Tax @<input ng:model="invoice.tax" ng:validate="number" style="width:43px">%
       </td>
       <td>
         {{calculate_tax()}}
       </td>
     </tr>
-    <tr>
-      <td colspan="7" align="right">
+    <tr class="sumTableRow">
+      <td ng-hide="printMode"></td>
+      <td colspan="6" align="right">
         Grand Total
       </td>
       <td>
         {{calculate_grand_total()}}
       </td>
     </tr>
-    <tr style="font-weight:bold;font-style:italic">
-      <td colspan="8">
+    <tr style="font-weight:bold;font-style:italic" class="sumTableRow">
+      <td ng-hide="printMode"></td>
+      <td colspan="7">
         Rupees: {{totalinwords()}}<!-- <input style="font-style:italic;" placeholder="Total Amount in words"/> -->
       </td>
     </tr>
+  </table>
+  <table id="noBorder">
+    <tr style="font-weight:bold;font-style:italic"><td align="right">For Piedpiper Brand Communication</td></tr>
   </table>
   <div class="noPrint">
     <a href="#" class="btn btn-primary" ng-show="printMode" ng-click="printInfo()">Print</a>
@@ -188,13 +180,5 @@
     <a href="#" class="btn btn-primary" ng-show="printMode" ng-click="printMode = false;">Turn Off Print Mode</a>
   </div>
 </div>
-
-<!-- <div ng-hide="printMode" class="copy noPrint">
-  <a href="http://jasdeep.ca/?utm_source=angular_invoicing">Jasdeep Singh</a> & 
-  <a href="http://github.com/manpreetrules">Manpreet Singh</a>
-  Made with 
-  <span class="love">&#9829;</span> in Toronto by 
-  <a href="http://metawarelabs.com/?utm_source=angular_invoicing">Metaware Labs Inc.</a>
-</div> -->
 </body>
 </html>

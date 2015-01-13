@@ -72,7 +72,7 @@ div.container{
 }
 
 #spacefiller {
-  height: 200px;
+  height: 150px;
 }
 
 .table thead > tr > th,
@@ -85,7 +85,20 @@ div.container{
   border-top: none !important;
 }
 
-#sumTable {
+.table .sumTableRow > td {
   border-top: 1px solid #ddd !important;
-  border-right: none !important;
+  /*border-right: none !important;*/
+}
+
+.btn {
+  padding: 5px !important;
+}
+
+.btn-danger {
+  padding: 2px !important;
+}
+
+#noBorder {
+  width: 100%;
+  border: none;
 }
